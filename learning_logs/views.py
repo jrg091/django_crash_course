@@ -5,7 +5,7 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 
-from .models import Topic
+from .models import Topic, Entry
 from .forms import TopicForm, EntryForm
 
 def index(request):
@@ -55,3 +55,18 @@ def new_entry(request, topic_id):
     topic = Topic.objects.get(id = topic_id)
     context = { 'topic': topic, 'form': form }
     return render(request, 'learning_logs/new_entry.html', context)
+
+def edit_entry(request, entry_id):
+    """Edit an existing entry"""
+    entry = Entry.objects.get(id = entry_id)
+    if request.method != 'POST':
+        form = EntryForm(instance = entry)
+    else:
+        form = EntryForm(instance = entry, data = request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('learning_logs:topic', args = [entry.topic.id]))
+
+
+    context = { 'entry': entry , 'topic': entry.topic, 'form': form}
+    return render(request, 'learning_logs/edit_entry.html', context)
