@@ -11,5 +11,7 @@ urlpatterns = [
     # Show all topics
     url(r'^topics/$', views.topics, name='topics'),
     # Topic detail page
-    url(r'^topics/(?P<topic_id>\d+)/$', views.topic, name='topic'),
+    url(r'^topics/(?P<topic_id>\d+)/$', views.topic, name = 'topic'),
+    # New Topic
+    url(r'^new_topic/$', views.new_topic, name = 'new_topic')
 ]

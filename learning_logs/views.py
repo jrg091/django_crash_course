@@ -2,8 +2,11 @@
 from __future__ import unicode_literals
 
 from django.shortcuts import render
+from django.http import HttpResponseRedirect
+from django.core.urlresolvers import reverse
 
-from learning_logs.models import Topic
+from .models import Topic
+from .forms import TopicForm
 
 def index(request):
     """Home page for Learning Logs"""
@@ -21,3 +24,17 @@ def topic(request, topic_id):
     context = {'topic': topic, 'entries': entries}
     
     return render(request, 'learning_logs/topic.html', context)
+
+def new_topic(request):
+    """Add a new topic"""
+    if request.method != 'POST':
+        form = TopicForm()
+    else:
+        # Post data submited so we need to handle it
+        form = TopicForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('learning_logs:topics'))
+    
+    context = { 'form': form }
+    return render(request, 'learning_logs/new_topic.html', context)
