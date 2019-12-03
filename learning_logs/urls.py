@@ -13,5 +13,8 @@ urlpatterns = [
     # Topic detail page
     url(r'^topics/(?P<topic_id>\d+)/$', views.topic, name = 'topic'),
     # New Topic
-    url(r'^new_topic/$', views.new_topic, name = 'new_topic')
+    url(r'^new_topic/$', views.new_topic, name = 'new_topic'),
+
+    # New Entry
+    url(r'^new_entry/(?P<topic_id>\d+)/$', views.new_entry, name = 'new_entry')
 ]
