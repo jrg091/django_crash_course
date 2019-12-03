@@ -1,9 +1,17 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <!-- TODO: move to a new app called common or similar -->
         <title>Learning Log</title>
     </head>
     <body>
+        <p>
+            {% if user.is_authenticated %}
+                Hello {{ user.username }}!
+            {% else %}
+                <a href="{% url 'users:login' %}">log in</a>
+            {% endif %}
+        </p>
         <p>
             <a href="{% url 'learning_logs:index' %}">Learning Log</a>
             <a href="{% url 'learning_logs:topics' %}">Topics</a>
