@@ -121,3 +121,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# Required by @login_required on learning_logs/views
+LOGIN_URL = '/users/login/'
