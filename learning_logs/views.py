@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, Http404
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 
 from .models import Topic, Entry
 from .forms import TopicForm, EntryForm
@@ -22,7 +22,7 @@ def topics(request):
 
 @login_required
 def topic(request, topic_id):
-    topic = Topic.objects.get(id = topic_id)
+    topic = get_object_or_404(Topic, id = topic_id)
     if topic.owner != request.user:
         raise Http404
 
@@ -43,7 +43,7 @@ def new_topic(request):
             new_topic = form.save(commit = False)
             new_topic.owner = request.user
             new_topic.save()
-            
+
             return HttpResponseRedirect(reverse('learning_logs:topics'))
     
     context = { 'form': form }
@@ -51,7 +51,8 @@ def new_topic(request):
 
 @login_required
 def new_entry(request, topic_id):
-    # TODO: validate that there is a topic with given id
+    topic = get_object_or_404(Topic, id = topic_id)
+
     if request.method != 'POST':
         form = EntryForm()
     else:
